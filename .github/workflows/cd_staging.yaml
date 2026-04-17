@@ -9,7 +9,6 @@ jobs:
     name: Deploying everything to the staging cluster
 
     steps:
-      -name: SSH Into server
       -run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}"  &> ~/ssh_key
         export PATH=/home/ubuntu/.nvm/versions/node/v24.14.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
