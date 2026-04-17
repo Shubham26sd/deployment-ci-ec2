@@ -1,20 +1,22 @@
 name: Deploy to staging
 on:
   push:
-    branch: -"main"
+    branch: -main
 
 jobs:
   redeploy_everything:
+    runs-on: ubuntu-latest
     name: Deploying everything to the staging cluster
 
     steps:
-      - name: SSH Into server
-      - run: |
-          echo ${{ secrets.SSH_PRIVATE_KEY }} &> ~/ssh_key
-          ssh -i ~/ssh_key ubuntu@13.233.194.244
-          cd deployment-ci && git pull
-          pnpm install 
-          pnpm run build
-          pm2 restart fe-server
-          pm2 restart http-server
-          pm2 restart ws-server
+      -name: SSH Into server
+      -run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}"  &> ~/ssh_key
+        export PATH=/home/ubuntu/.nvm/versions/node/v24.14.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+        ssh -i ~/ssh_key ubuntu@13.233.194.244
+        cd deployment-ci && git pull origin main 
+        pnpm install 
+        pnpm run build
+        pm2 restart fe-server
+        pm2 restart http-server
+        pm2 restart ws-server
